@@ -1,0 +1,77 @@
+config t
+
+no ip domain-lookup
+
+hostname SW3
+
+username admin secret ccna123
+enable secret ccna124
+
+ip domain-name lab.local
+
+ip ssh version 2
+
+crypto key generate rsa  general-keys modulus 2048
+
+! via rollover cable
+line con 0
+ exec-timeout 5 0
+ privilege level 15
+ logging synchronous
+ exit
+
+! via Virtual Teletype
+line vty 0 4
+ transport input ssh
+ login local
+ logging synchronous
+ exit
+ 
+vlan 10
+ name Eng
+vlan 30 
+ name Admin
+vlan 99
+ name Management
+vlan 199
+ name Native
+exit
+
+interface vlan 99
+ ip   address 192.168.99.3 255.255.255.0
+ ipv6 address 2001:db8:0:99::3/64
+ ipv6 address fe80::23         link-local
+ no shutdown
+ exit
+ 
+ip default-gateway 192.168.99.1
+
+
+
+! Trunk link to SW1
+interface gigabitethernet0/1
+ switchport mode trunk
+ switchport trunk native vlan 199
+ switchport trunk allowed vlan 10,30,99
+ no shutdown
+ exit
+
+! Access Port for Eng2 (VLAN 10)
+interface fastethernet0/11
+ switchport mode access
+ switchport access vlan 10
+ spanning-tree portfast
+ no shutdown
+ exit
+
+! Access Port for Admin1 (VLAN 30)
+interface fastethernet0/12
+ switchport mode access
+ switchport access vlan 30
+ spanning-tree portfast
+ no shutdown
+ exit
+ 
+exit
+
+

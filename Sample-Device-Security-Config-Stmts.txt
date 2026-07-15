@@ -1,0 +1,34 @@
+username admin secret  ccna123
+enable secret ccna124
+
+ip domain-name lab.local
+
+ip ssh version 2
+
+crypto key generate rsa  general-keys modulus 2048
+
+! via rollover cable
+line con 0
+ exec-timeout 5 0
+ privilege level 15
+ login local
+ logging synchronous
+ exit
+
+! Auxiliary port
+! via out-of-band management via a dial-up modem
+! traditionally, not in use for now
+ 
+! via Virtual Teletype
+line vty 0 4
+ transport input ssh
+ login local
+ logging synchronous
+ exit
+
+vlan 99
+name Management
+exit
+
+
+ 
