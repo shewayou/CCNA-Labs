@@ -39,4 +39,10 @@ SW# write memory
 SW# reload
 
 
+## ⚠️ Study Notes: Key differences between cases. 
+Part 1 vs. Part 2: Look at where the routing happens. Part 1 uses interface vlan 10 on the Core Switch. Part 2 uses interface gig0/0/1.10 on the Edge Router.
+
+Part 2 vs. Part 3: Look at how the router handles tags. In Part 2, the router's physical port naturally understands standard subinterfaces (.10). In Part 3, the router has a switch chip physically glued inside it, forcing you to use switch commands (switchport trunk) and SVIs on the router itself.
+
+Part 1 vs. Part 4: Look at the connection between the router and switch. In Part 1, the router uses a native L3 physical port (gi0/0/1). In Part 4, the router is trapped using an L2 port, so it has to invent a dummy VLAN (999) just to assign an IP address and talk to the L3 switch.
 
