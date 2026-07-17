@@ -3,9 +3,9 @@ config t
 !
 !
 ! R1: ISR4331 with 3 L3 ports n 4 NIM-E2-4 L2 ports
-! Use only L3 ports in this lab.
-! R1 interact w SW1 L2 Switch 2960-24TT 
-! "inter-vlan routing, option 2, Router-on-a-stick" method
+! R1 use built-in L3 port to connect with ISP.
+! R1 use built-in L3 port to connect with SW1 L2 Switch 2960-24TT.
+! "inter-vlan routing, option 2, Router-on-a-stick" method    or Case 2
 
 no ip domain-lookup
 
@@ -48,8 +48,7 @@ ipv6 unicast-routing
 
 
 
-ip route 192.168.0.0 255.255.0.0 10.0.0.2
-ipv6 route 2001:db8:0::/48 2001:db8:0:0::2
+
 
 
 
@@ -80,7 +79,7 @@ interface gigabitethernet0/0/1.10
  description R1 -- SW1 (VLAN 10: Eng)
  encapsulation dot1q 10
  ip   address 192.168.10.1 255.255.255.0
- ipv6 address 2001:db8:10:0::1/64
+ ipv6 address 2001:db8:0:10::1/64
  ipv6 address fe80::1         link-local
  no shutdown
  exit
@@ -89,7 +88,7 @@ interface gigabitethernet0/0/1.20
  description R1 -- SW1 (VLAN 20: Sales) 
  encapsulation dot1q 20
  ip   address 192.168.20.1 255.255.255.0
- ipv6 address 2001:db8:20:0::1/64
+ ipv6 address 2001:db8:0:20::1/64
  ipv6 address fe80::1         link-local
  no shutdown
  exit
@@ -98,7 +97,7 @@ interface gigabitethernet0/0/1.30
  description R1 -- SW1 (VLAN 30: Admin)
  encapsulation dot1q 30
  ip   address 192.168.30.1 255.255.255.0
- ipv6 address 2001:db8:30:0::1/64
+ ipv6 address 2001:db8:0:30::1/64
  ipv6 address fe80::1         link-local
  no shutdown
  exit
@@ -108,10 +107,18 @@ interface gigabitethernet0/0/1.99
  description R1 -- SW1 (VLAN 99: Management)
  encapsulation dot1q 99
  ip   address 192.168.99.1 255.255.255.0
- ipv6 address 2001:db8:99:0::1/64
+ ipv6 address 2001:db8:0:99::1/64
  ipv6 address fe80::1         link-local
  no shutdown
  exit
+
+! 2. Fix the Native VLAN Mismatch on the Trunk
+interface gigabitethernet0/0/1.199
+ description R1 -- SW1 (VLAN 199: Native)
+ encapsulation dot1q 199 native
+ no shutdown
+ exit
+
 
  
 ! 2. Configure DHCP for the PCs

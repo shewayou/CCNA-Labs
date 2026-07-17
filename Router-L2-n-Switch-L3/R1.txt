@@ -1,11 +1,19 @@
+vlan database
+vlan 999 name Transit_To_SW1
+exit
+
+
+
+
+
 config t
 
 !
 !
 ! R1: ISR4331 with 3 L3 ports n 4 NIM-E2-4 L2 ports
 ! R1 use built-in L3 port to connect with ISP.
-! R1 use built-in L3 port to connect with SW1 L3 Switch 3650-24PS.
-! "inter-vlan routing, option 3, layer 3 switch" method              or Case 1
+! R1 use NIM-E2-4 L2 port to connect with SW1 L3 Switch 3650-24PS.
+! "Layer 3 Core via a Layer 2 Transit Link         The transit VLAN" method           or Case 4
 
 no ip domain-lookup
 
@@ -43,8 +51,22 @@ crypto key generate rsa  general-keys modulus 2048
 
 ipv6 unicast-routing
 
+
+! 4. Static Routes pointing to SW1
 ip route 192.168.0.0 255.255.0.0 10.0.0.2
 ipv6 route 2001:db8:0::/48 2001:db8:0:0::2
+
+
+
+ 
+! 2. Create the SVI to hold the IP address
+interface vlan 999
+ ip address 10.0.0.1 255.255.255.252
+ ipv6 address 2001:db8:0:0::1/64
+ ipv6 address fe80::1         link-local
+ no shutdown
+ exit 
+
 
 ! R1 -- ISP
 ! gig0/0/0 is L3 ports
@@ -56,13 +78,17 @@ interface gigabitethernet0/0/0
  no shutdown
  exit
  
+
+! The industry best practice for connecting a Layer 2 access port directly to a Layer 3 routed port 
+! is to simply disable CDP on that specific link so it stops reporting the false positive. 
+ 
 ! R1 -- SW1
-! gig0/0/1 is built-in L3 port 
-interface gigabitethernet0/0/1
- description R1 -- SW1 
- ip   address 10.0.0.1 255.255.255.252
- ipv6 address 2001:db8:0:0::1/64
- ipv6 address fe80::1         link-local
+! gig0/1/0 is NIM-E2-4 L2 ports
+interface gigabitethernet0/1/0
+ description R1 -- SW1 (Transit Link)
+ no cdp enable
+ switchport mode access
+ switchport access vlan 999
  no shutdown
  exit
  

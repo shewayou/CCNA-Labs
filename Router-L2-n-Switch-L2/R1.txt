@@ -1,0 +1,151 @@
+
+!
+! Rest assure in real world, these commands are entered in global config mode.
+! For now it is entered here b/c Packet Tracer quirk.
+!
+vlan database
+vlan 10 name Eng
+vlan 20 name Sales
+vlan 30 name Admin
+vlan 99 name Management
+vlan 199 name Native
+exit
+
+
+
+
+
+
+
+
+
+config t
+
+!
+!
+! R1: ISR4331 with 3 built-in L3 ports n 4 NIM-E2-4 L2 ports
+! R1 use built-in L3 port to connect with ISP.
+! R1 use NIM-E2-4 L2 port to connect with SW1 L2 Swith 2960-24TT.
+! "The Router acting like a Switch" method    or Case 3
+
+no ip domain-lookup
+
+hostname R1
+
+! via rollover cable
+line con 0
+ exec-timeout 5 0
+ privilege level 15
+ logging synchronous
+ exit
+
+! Auxiliary port
+! via out-of-band management via a dial-up modem
+! traditionally, not in use for now
+line aux 0
+ logging synchronous
+ exit
+ 
+! via Virtual Teletype
+line vty 0 4
+ transport input ssh
+ login local
+ logging synchronous
+ exit
+ 
+ 
+username admin secret ccna123
+
+ip domain-name lab.local
+
+ip ssh version 2
+
+crypto key generate rsa  general-keys modulus 2048
+
+
+
+ipv6 unicast-routing
+
+
+
+! 2. Configure DHCP for the PCs
+ip dhcp excluded-address 192.168.10.1 192.168.10.10
+ip dhcp excluded-address 192.168.20.1 192.168.20.10
+ip dhcp excluded-address 192.168.30.1 192.168.30.10
+
+ip dhcp pool Eng_VLAN10
+ network 192.168.10.0 255.255.255.0
+ default-router 192.168.10.1
+ exit
+
+ip dhcp pool Sales_VLAN20
+ network 192.168.20.0 255.255.255.0
+ default-router 192.168.20.1
+ exit
+
+ip dhcp pool Admin_VLAN30
+ network 192.168.30.0 255.255.255.0
+ default-router 192.168.30.1
+ exit
+
+
+
+! 2. Create the SVIs (These replace your ROAS subinterfaces!)
+interface vlan 10
+ ip address 192.168.10.1 255.255.255.0
+ ipv6 address 2001:db8:0:10::1/64
+ no shutdown
+ exit
+
+interface vlan 20
+ ip address 192.168.20.1 255.255.255.0
+ ipv6 address 2001:db8:0:20::1/64
+ no shutdown
+ exit
+
+interface vlan 30
+ ip address 192.168.30.1 255.255.255.0
+ ipv6 address 2001:db8:0:30::1/64
+ no shutdown
+ exit
+
+interface vlan 99
+ ip address 192.168.99.101 255.255.255.0
+ ipv6 address 2001:db8:0:99::101/64
+ ipv6 address fe80::1            link-local
+ no shutdown
+ exit
+!
+
+
+
+! R1 -- ISP
+! gig0/0/0 is L3 ports
+interface gigabitethernet0/0/0
+ description R1 -- ISP 
+ ip   address 203.0.113.2   255.255.255.252
+ ipv6 address 2001:db8:0:113::2/64
+ ipv6 address fe80::1           link-local
+ no shutdown
+ exit
+ 
+! R1 -- SW1
+! gig0/1/0 is L2 port
+interface gigabitethernet0/1/0
+ description R1 -- SW1 (L2 2960-24TT) via Router's NIM-E2-4 L2 port
+ switchport mode trunk
+ switchport trunk native vlan 199
+ switchport trunk allowed vlan 10,20,30,99
+ no shutdown
+ exit
+ 
+interface loopback0
+ description R1 loopback0
+ ip   address 192.168.1.1         255.255.255.255
+ ipv6 address 2001:db8:0:1::1/128 
+ ipv6 address fe80::1         link-local
+ exit
+ 
+exit
+
+

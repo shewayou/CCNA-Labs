@@ -3,9 +3,9 @@ config t
 !
 !
 ! SW1: L3 Switch 3650-24PS
-! SW1 connect to R1 ISR4331 built-in L3 port
-! SW1 interact w SW2 SW3 SW4 L2 switch 2960-24TT
-! "inter-vlan routing, option 3, layer 3 switch" method              or Case 1
+! SW1 connect to R1 ISR4331 NIM-E2-4 L2 port
+! SW1 connect to SW2 SW3 SW4 L2 switch 2960-24TT
+! "Layer 3 Core via a Layer 2 Transit Link         The transit VLAN" method           or Case 4
 
 no ip domain-lookup
 
@@ -47,6 +47,8 @@ vlan 99
 name Management
 vlan 199
 name Native
+vlan 999
+name Transit_To_SW1
 exit
 
 ! 1. Create SVIs for IPv4 and IPv6 Gateways
@@ -97,16 +99,24 @@ ip dhcp pool Admin_VLAN30
  network 192.168.30.0 255.255.255.0
  default-router 192.168.30.1
  exit
-
+ 
+ 
+! Static route pointing to R1 for internet traffic
 ip route 0.0.0.0 0.0.0.0 10.0.0.1
 ipv6 route ::/0 2001:db8:0:0::1
 
 
+
+! The industry best practice for connecting a Layer 2 access port directly to a Layer 3 routed port 
+! is to simply disable CDP on that specific link so it stops reporting the false positive. 
+ 
 ! SW1 -- R1
 ! gig1/0/1 is L3 ports
+! The link to R1 becomes a true Layer 3 port
 interface gigabitethernet1/0/1
  description SW1 -- R1 
  no switchport
+ no cdp enable
  ip   address 10.0.0.2 255.255.255.252
  ipv6 address 2001:db8:0:0::2/64
  ipv6 address fe80::21        link-local
@@ -152,17 +162,8 @@ interface loopback0
  ip   address 192.168.0.21         255.255.255.255
  ipv6 address 2001:db8:0:21::21/128 
  ipv6 address fe80::21          link-local
- exit 
- 
-! SW1(config)#interface loopback0
-! SW1(config-if)# description SW1 loopback0
-! SW1(config-if)# ip   address 192.168.0.21         255.255.255.255
-! SW1(config-if)# ipv6 address 2001:db8:0:0::21/128 
-! %Loopback0: Error: 2001:DB8::21/128 is overlapping with 2001:DB8::/64 on GigabitEthernet1/0/1
-! SW1(config-if)# ipv6 address fe80::21          link-local
-! SW1(config-if)# 
-! SW1(config-if)#exit 
- 
+ exit
+
 exit
 
 

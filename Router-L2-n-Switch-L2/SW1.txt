@@ -3,9 +3,9 @@ config t
 !
 !
 ! SW1: L2 Switch 2960-24TT
-! SW1 connect to R1 ISR4331 built-in L3 port
+! SW1 connect to R1 ISR4331 NIM-E2-4 L2 port
 ! SW1 connect to SW2 SW3 SW4 L2 Switch 2960-24TT
-! "inter-vlan routing, option 2, Router-on-a-stick" method    or Case 2
+! "The Router acting like a Switch" method    or Case 3
 
 no ip domain-lookup
 
@@ -34,6 +34,13 @@ line vty 0 4
  logging synchronous
  exit
 
+! On this L2 Switch 2960-24TT, we have done
+! SW(config)# sdm dual-ipv4-and-ipv6 default
+! SW(config)# exit
+! SW# wr
+! SW# reload
+! 
+
 
 vlan 10
 name Eng
@@ -48,18 +55,18 @@ name Native
 exit
 
 
+! Point SW1 to R1
+ip default-gateway 192.168.99.101
 
-! 1. Create SVI for SW1 Management IP
+
+! Add the missing Management IP
 interface vlan 99
  description SW1 Management SVI
- ip address 192.168.99.11 255.255.255.0
- ipv6 address 2001:db8:0:99::11/64
- ipv6 address fe80::21 link-local
+ ip address 192.168.99.1 255.255.255.0
+ ipv6 address 2001:db8:0:99::1/64
+ ipv6 address fe80::2 link-local
  no shutdown
  exit
- 
-! 2. Configure Default Gateway (points to R1's subinterface IP)
-ip default-gateway 192.168.99.1
 
 
 ! SW1 -- R1
@@ -68,9 +75,10 @@ interface gigabitethernet0/1
  description SW1 -- R1 
  switchport mode trunk
  switchport trunk native vlan 199
- switchport trunk allowed vlan 10,20,30,99,199
+ switchport trunk allowed vlan 10,20,30,99
  no shutdown
  exit
+
 
 ! SW1 -- SW2
 ! gig0/2 to SW2 L2 Switch 2960-24TT
