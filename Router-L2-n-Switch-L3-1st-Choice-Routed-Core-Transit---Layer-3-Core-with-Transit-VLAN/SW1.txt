@@ -6,6 +6,10 @@ config t
 ! SW1 connect to R1 ISR4331 NIM-E2-4 L2 port
 ! SW1 connect to SW2 SW3 SW4 L2 switch 2960-24TT
 ! "1st Choice: Routed Core Transit         Layer-3-Core-with-Transit-VLAN" method           or Case 1st Choice implementation
+! From Gemini::: The Concept: 
+! This is the superior enterprise design. SW1's hardware ASICs route the internal VLAN traffic at wire speed. R1 is freed up to act exclusively as an edge/WAN router. They communicate strictly over the dedicated VLAN 99 transit link.
+!
+
 
 
 no ip domain-lookup

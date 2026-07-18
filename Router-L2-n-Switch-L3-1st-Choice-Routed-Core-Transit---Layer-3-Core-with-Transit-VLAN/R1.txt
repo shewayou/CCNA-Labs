@@ -19,6 +19,11 @@ config t
 ! R1 use built-in L3 port to connect with ISP.
 ! R1 use NIM-E2-4 L2 port to connect with SW1 L3 Switch 3650-24PS.
 ! "1st Choice: Routed Core Transit         Layer-3-Core-with-Transit-VLAN" method           or Case 4 1st Choice implementation
+! From Gemini::: The Concept: 
+! This is the superior enterprise design. SW1's hardware ASICs route the internal VLAN traffic at wire speed. R1 is freed up to act exclusively as an edge/WAN router. They communicate strictly over the dedicated VLAN 99 transit link.
+!
+
+
 
 no ip domain-lookup
 

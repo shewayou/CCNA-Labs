@@ -6,6 +6,10 @@ config t
 ! SW1 connect to R1 ISR4331 NIM-E2-4 L2 port
 ! SW1 connect to SW2 SW3 SW4 L2 switch 2960-24TT
 ! "2nd Choice: ROAS-NIM-Module         Router-on-a-Stick-via-Switch-Module" method           or Case 4 2nd Choice implementation
+! From Gemini::: The Concept: 
+! Even though you are using a switch module (NIM-E2-4) rather than physical router ports, R1's CPU is still doing all the heavy lifting. SW1 acts as a pure Layer 2 pass-through, and the router handles every single inter-VLAN packet.
+!
+
 
 
 no ip domain-lookup
