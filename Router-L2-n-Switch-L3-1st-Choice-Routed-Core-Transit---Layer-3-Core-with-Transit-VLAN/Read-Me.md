@@ -1,14 +1,14 @@
-# CCNA Lab: Inter-VLAN Routing & Core Connectivity
+# CCNA Lab: Layer 3 Core with Transit VLAN (Routed Core Transit)
 
 ## Overview
 This lab represents "Part 1" of a comprehensive CCNA routing and switching topology. The primary objective is to establish foundational Layer 2 and Layer 3 connectivity before implementing dynamic routing protocols (OSPF). 
 
-This configuration utilizes the **"Inter-VLAN Routing, Option 3 (Layer 3 Switch)"** method.
+This configuration utilizes the **"Layer-3-Core-with-Transit-VLAN (or Routed-Core-Transit)"** method. This is the superior enterprise design where the core switch's hardware ASICs route the internal VLAN traffic at wire speed, while the edge router is freed up to act exclusively as a WAN gateway. They communicate strictly over a dedicated transit link (VLAN 99).
 
 ## Topology Structure
 * **ISP:** ISR4331 Router (Simulating the external internet gateway)
-* **R1:** ISR4331 Router (Edge router connecting the local network to the ISP)
-* **SW1:** 3650-24PS Layer 3 Switch (Core switch handling inter-VLAN routing and DHCP)
+* **R1:** ISR4331 Router with NIM-E2-4 module (Edge router connecting the local network to the ISP)
+* **SW1:** 3650-24PS Layer 3 Switch (Core switch handling all inter-VLAN routing and DHCP services)
 * **SW2, SW3, SW4:** 2960-24TT Layer 2 Switches (Access layer switches connecting end-user PCs)
 
 ## VLAN Allocation

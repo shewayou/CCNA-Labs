@@ -79,7 +79,7 @@ ip dhcp pool Admin_VLAN30
 
 ! 2. Create the SVI to hold the IP address
 interface vlan 10 
- description  R1 --- SW1 --- PC vlan10
+ description Core_Gateway_for_Eng_VLAN10
  ip    address  192.168.10.1             255.255.255.0
  ipv6  address  2001:db8:0:10::1/64
  ipv6  address  fe80::1          link-local
@@ -88,7 +88,7 @@ interface vlan 10
 !
 
 interface vlan 20 
- description  R1 --- SW1 --- PC vlan20
+ description Core_Gateway_for_Sales_VLAN20
  ip    address  192.168.20.1             255.255.255.0
  ipv6  address  2001:db8:0:20::1/64
  ipv6  address  fe80::21          link-local
@@ -97,7 +97,7 @@ interface vlan 20
 !
 
 interface vlan 30 
- description  R1 --- SW1 --- PC1 vlan30
+ description Core_Gateway_for_Admin_VLAN30
  ip    address  192.168.30.1             255.255.255.0
  ipv6  address  2001:db8:0:30::1/64
  ipv6  address  fe80::21          link-local
@@ -106,7 +106,7 @@ interface vlan 30
 !
 
 interface vlan 99
- description  R1 --- SW1 --- Management vlan99
+ description Core_Gateway_for_Management_VLAN99
  ip    address  192.168.99.1             255.255.255.0
  ipv6  address  2001:db8:0:99::1/64
  ipv6  address  fe80::21          link-local

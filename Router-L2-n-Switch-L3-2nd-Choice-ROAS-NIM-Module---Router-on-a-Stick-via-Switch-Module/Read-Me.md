@@ -1,9 +1,9 @@
-# CCNA Lab: Inter-VLAN Routing & Core Connectivity
+# CCNA Lab: Router-on-a-Stick-via-Switch-Module (ROAS-NIM-Module)
 
 ## Overview
 This lab represents "Part 1" of a comprehensive CCNA routing and switching topology. The primary objective is to establish foundational Layer 2 and Layer 3 connectivity before implementing dynamic routing protocols (OSPF). 
 
-This configuration utilizes the **"Inter-VLAN Routing, Option 3 (Layer 3 Switch)"** method.
+This configuration utilizes the **"Router-on-a-Stick-via-Switch-Module"** method.
 
 ## Topology Structure
 * **ISP:** ISR4331 Router (Simulating the external internet gateway)
