@@ -2,7 +2,7 @@ config t
 
 no ip domain-lookup
 
-hostname SW4
+hostname SW3
 
 username admin secret ccna123
 enable secret ccna124
@@ -27,9 +27,8 @@ line vty 0 4
  logging synchronous
  exit
  
- 
-vlan 20
- name Sales
+vlan 10
+ name Eng
 vlan 30 
  name Admin
 vlan 99
@@ -38,19 +37,10 @@ vlan 199
  name Native
 exit
 
-! Switch 2960 is strictly layer 2 switch
-! Switch Database Management (SDM) template
-! SW4(config)# sdm prefer dual-ipv4-and-ipv6 routing        ! for newer switch
-! SW4(config)# sdm prefer dual-ipv4-and-ipv6 default        ! for Switch 2960 strictly layer 2
-! SW4(config)# end
-! SW4# wr
-
-
-
 interface vlan 99
- ip   address 192.168.99.4 255.255.255.0
- ipv6 address 2001:db8:0:99::4/64
- ipv6 address fe80::24         link-local
+ ip   address 192.168.99.3 255.255.255.0
+ ipv6 address 2001:db8:0:99::3/64
+ ipv6 address fe80::23         link-local
  no shutdown
  exit
  
@@ -62,27 +52,26 @@ ip default-gateway 192.168.99.1
 interface gigabitethernet0/1
  switchport mode trunk
  switchport trunk native vlan 199
- switchport trunk allowed vlan 20,30,99
+ switchport trunk allowed vlan 10,30,99
  no shutdown
  exit
 
-! Access Port for Sales2 (VLAN 20)
+! Access Port for Eng2 (VLAN 10)
 interface fastethernet0/11
  switchport mode access
- switchport access vlan 20
+ switchport access vlan 10
  spanning-tree portfast
- spanning-tree bpduguard enable
  no shutdown
  exit
 
-! Access Port for Admin2 (VLAN 30)
+! Access Port for Admin1 (VLAN 30)
 interface fastethernet0/12
  switchport mode access
  switchport access vlan 30
  spanning-tree portfast
- spanning-tree bpduguard enable
  no shutdown
  exit
  
 exit
+
 

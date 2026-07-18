@@ -1,0 +1,33 @@
+config t
+
+!
+!
+! ISP: ISR4331 with 3 L3 ports n 4 NIM-E2-4 L2 ports
+! Config minimally for ISP :-)
+
+no ip domain-lookup
+
+hostname ISP
+
+! via rollover cable
+line con 0
+ exec-timeout 5 0
+ privilege level 15
+ logging synchronous
+ exit
+
+ipv6 unicast-routing
+
+! ISP -- R1
+! gig0/0/0 is L3 ports
+interface gigabitethernet0/0/0
+ description ISP -- R1 
+ ip   address 203.0.113.1   255.255.255.252
+ ipv6 address 2001:db8:0:113::1/64
+ ipv6 address fe80::101     link-local
+ no shutdown
+ exit
+ 
+exit
+ 
+
