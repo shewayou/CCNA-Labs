@@ -34,8 +34,10 @@ line vty 0 4
  logging synchronous
  exit
  
-ip   routing
-ipv6 unicast-routing
+ 
+ 
+ 
+
 
 vlan 10
 name Eng
@@ -48,6 +50,17 @@ name Management
 vlan 199
 name Native
 exit
+
+
+ 
+ 
+ip   routing
+ipv6 unicast-routing
+
+ip route 0.0.0.0 0.0.0.0 10.0.0.1
+ipv6 route ::/0 2001:db8:0:0::1
+
+
 
 ! 1. Create SVIs for IPv4 and IPv6 Gateways
 interface vlan 10
@@ -78,6 +91,9 @@ interface vlan 99
  no shutdown
  exit
 
+
+
+
 ! 2. Configure DHCP for the PCs
 ip dhcp excluded-address 192.168.10.1 192.168.10.10
 ip dhcp excluded-address 192.168.20.1 192.168.20.10
@@ -98,8 +114,6 @@ ip dhcp pool Admin_VLAN30
  default-router 192.168.30.1
  exit
 
-ip route 0.0.0.0 0.0.0.0 10.0.0.1
-ipv6 route ::/0 2001:db8:0:0::1
 
 
 ! SW1 -- R1
@@ -153,6 +167,8 @@ interface loopback0
  ipv6 address 2001:db8:0:21::21/128 
  ipv6 address fe80::21          link-local
  exit 
+
+
  
 ! SW1(config)#interface loopback0
 ! SW1(config-if)# description SW1 loopback0
@@ -162,7 +178,7 @@ interface loopback0
 ! SW1(config-if)# ipv6 address fe80::21          link-local
 ! SW1(config-if)# 
 ! SW1(config-if)#exit 
- 
+
 exit
 
 

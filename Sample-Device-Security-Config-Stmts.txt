@@ -1,3 +1,7 @@
+no ip domain-lookup
+
+
+
 username admin secret  ccna123
 enable secret ccna124
 

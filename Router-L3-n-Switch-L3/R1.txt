@@ -46,6 +46,8 @@ ipv6 unicast-routing
 ip route 192.168.0.0 255.255.0.0 10.0.0.2
 ipv6 route 2001:db8:0::/48 2001:db8:0:0::2
 
+
+
 ! R1 -- ISP
 ! gig0/0/0 is L3 ports
 interface gigabitethernet0/0/0
@@ -55,6 +57,8 @@ interface gigabitethernet0/0/0
  ipv6 address fe80::1           link-local
  no shutdown
  exit
+
+
  
 ! R1 -- SW1
 ! gig0/0/1 is built-in L3 port 
@@ -65,6 +69,7 @@ interface gigabitethernet0/0/1
  ipv6 address fe80::1         link-local
  no shutdown
  exit
+ 
  
 interface loopback0
  description R1 loopback0

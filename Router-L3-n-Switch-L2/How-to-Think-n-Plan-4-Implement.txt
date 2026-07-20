@@ -1,0 +1,23 @@
+## Logical Configuration Checklist
+For every device deployed in this lab, the following configuration flow is verified:
+1. Identify the IPv6 link-local address.
+2. Identify interfaces to other devices (e.g., gig0/1/0, gig0/0/0, fa0/1, or fa0/11).
+3. Determine if the device is a Router or a Switch.
+    * **If Router:** Is the link strictly L3-capable (ISR4331 built-in gig0/0/0) or L2-capable (ISR4331 NIM-ES2-4 switch module)? Apply routing or subinterface commands accordingly.
+    * **If Switch:** Is it an L3 Switch (3650) requiring `ip routing` and SVIs, or an L2 Switch (2960) requiring trunks and an `ip default-gateway`?
+4. Assign IPv4 and IPv6 addresses on each link or VLAN.
+5. Create Loopback addresses (Note: Layer 2 2960 switches do not support loopbacks).
+6. Configure the DHCP pools on the acting routing device.
+7. Establish basic static routing or default gateways to ensure end-to-end connectivity.
+
+
+
+Steps to identify naming
+
+1: For each hardware device, come up with its IPv4 and IPv6 addressing, and loopback IPv4 and IPv6 ::12ef addressing
+Note "12ef" is a place holder notation for 4 digit hexademical code
+2: For internal implicit subnets, do the same as step 1. For example, we have Eng, Sales, and Admin subnets, and we need to enable SSH to each Switch, therefore a Management subnet is implicitly needed.
+3: Identify each interface on device, and come up with IPv4 and IPv6 addressing.
+
+
+
