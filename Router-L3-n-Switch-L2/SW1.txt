@@ -54,7 +54,7 @@ exit
 
 
 
-
+ipv6 route ::/0 2001:db8:0:99::1
 
 ! 2. Configure Default Gateway (points to R1's subinterface IP)
 ip default-gateway 192.168.99.1

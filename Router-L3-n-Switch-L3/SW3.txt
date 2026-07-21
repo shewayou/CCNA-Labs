@@ -45,7 +45,6 @@ interface vlan 99
  exit
 
 
-ipv6 unicast-routing
 ipv6 route ::/0   2001:db8:0:99::1
 ! Or ipv6 route ::/0 fe80::21
 ! the ipv6 last resort route goes to SW1 via vlan 99
