@@ -57,6 +57,7 @@ exit
 ip   routing
 ipv6 unicast-routing
 
+! 10.0.01  2001:db8:0:0::1   is R1 interface gigabitethernet0/0/1
 ip route 0.0.0.0 0.0.0.0 10.0.0.1
 ipv6 route ::/0 2001:db8:0:0::1
 

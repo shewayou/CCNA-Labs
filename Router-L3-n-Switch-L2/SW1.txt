@@ -66,7 +66,7 @@ interface vlan 99
  description SW1 Management SVI
  ip address 192.168.99.11 255.255.255.0
  ipv6 address 2001:db8:0:99::11/64
- ipv6 address fe80::21 link-local
+ ipv6 address fe80::11 link-local
  no shutdown
  exit
  
